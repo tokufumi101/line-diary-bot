@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: LINE Diary Bot - Step 1 Echo Bot
+
+Globals:
+  Function:
+    Timeout: 10
+    Runtime: nodejs20.x
+
+Parameters:
+  LineChannelSecret:
+    Type: String
+    NoEcho: true
+    Description: LINE Channel Secret for signature verification
+  LineChannelAccessToken:
+    Type: String
+    NoEcho: true
+    Description: LINE Channel Access Token for Messaging API
+
+Resources:
+  WebhookFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: handlers/webhook.handler
+      Environment:
+        Variables:
+          LINE_CHANNEL_SECRET: !Ref LineChannelSecret
+          LINE_CHANNEL_ACCESS_TOKEN: !Ref LineChannelAccessToken
+      Events:
+        WebhookPost:
+          Type: Api
+          Properties:
+            Path: /webhook
+            Method: post
+
+Outputs:
+  WebhookUrl:
+    Description: LINE Webhook URL (set this in LINE Developers console)
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/webhook"
