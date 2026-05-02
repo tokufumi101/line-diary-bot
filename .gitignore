@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+.aws-sam/
+
+# Build output
+.build/
+dist/
+
+# Environment variables
+.env
+.env.local
+
+# AWS SAM
+samconfig.toml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
